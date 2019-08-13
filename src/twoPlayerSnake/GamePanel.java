@@ -21,8 +21,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	Font menuOptions;
 	Font scoreFont;
 	Timer frameDraw;
-	SnakeOne one;
-	SnakeTwo two;
+	Food food;
+	ObjectManager manager;
 	public static BufferedImage image;
 	public static boolean needImage = true;
 	public static boolean gotImage = false;	
@@ -32,6 +32,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 		scoreFont = new Font("Arial", Font.PLAIN, 20);
 		frameDraw = new Timer(1000/60, this);
 		frameDraw.start();
+		food=new Food(1,1,Color.RED);
+		manager=new ObjectManager(food);
 	}
 	public void paintComponent(Graphics g){
 		if(currentState == MENU){
@@ -56,7 +58,6 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 		g.fillRect(0, 0, TwoPlayerSnake.WIDTH, TwoPlayerSnake.HEIGHT);
 	}
 	void drawEndState(Graphics g)  { 
-		
 		g.setColor(Color.RED);
 		g.fillRect(0, 0, TwoPlayerSnake.WIDTH, TwoPlayerSnake.HEIGHT);
 	}
