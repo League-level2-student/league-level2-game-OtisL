@@ -21,6 +21,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	Font menuOptions;
 	Font scoreFont;
 	Timer frameDraw;
+	Timer movement;
 	Food food;
 	ObjectManager manager;
 	public static BufferedImage image;
@@ -30,10 +31,11 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 		titleFont = new Font("Arial", Font.PLAIN, 48);
 		menuOptions = new Font("Arial", Font.PLAIN, 30);
 		scoreFont = new Font("Arial", Font.PLAIN, 20);
-		frameDraw = new Timer(1000/60, this);
+		frameDraw = new Timer(1000/10, this);
 		frameDraw.start();
 		food=new Food(1,1,Color.RED);
 		manager=new ObjectManager(food);
+		manager.dropFood();
 	}
 	public void paintComponent(Graphics g){
 		if(currentState == MENU){
@@ -56,6 +58,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	void drawGameState(Graphics g) { 
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, TwoPlayerSnake.WIDTH, TwoPlayerSnake.HEIGHT);
+		manager.draw(g);
 	}
 	void drawEndState(Graphics g)  { 
 		g.setColor(Color.RED);
@@ -100,8 +103,19 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 		        currentState++;
 		    }
 		}
+		if (e.getKeyCode()==KeyEvent.VK_UP) {
+			manager.up();
+		}
+		if (e.getKeyCode()==KeyEvent.VK_DOWN) {
+			manager.down();
+		}
+		if (e.getKeyCode()==KeyEvent.VK_LEFT) {
+			manager.left();
+		}
+		if (e.getKeyCode()==KeyEvent.VK_RIGHT) {
+			manager.right();
+		}
 	}
-
 	@Override
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
