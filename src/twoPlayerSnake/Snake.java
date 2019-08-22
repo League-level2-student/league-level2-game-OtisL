@@ -7,6 +7,8 @@ import java.util.ArrayList;
 public class Snake extends Segment{
 	ArrayList<Segment> tail = new ArrayList<Segment>();
 	int direction = 0;
+	int score = 0;
+	boolean active = true;
 	public Snake(int x, int y, Color color) {
 		// TODO Auto-generated constructor stub
 		super(x,y,color);
@@ -25,22 +27,21 @@ public class Snake extends Segment{
 		}
 		eat(f);
 		move();
+		checkBorders();
 		update();
 	}
 	void manageTail() {
+		  checkTailCollision();
 		  tail.add(new Segment(this.x, this.y, this.color)); 
 		  //tail.add(new Segment(this.x, this.y, this.color)); 
 		  tail.remove(0);
-		  checkTailCollision();
 		}
 	void checkTailCollision() {
 		for(int i=0; i<tail.size(); i++){
 		    Segment current = tail.get(i);
 		    if(this.x==current.x && this.y == current.y){
-		      //eaten=1;
 		    	System.out.println("oofed");
-		    	tail = new ArrayList<Segment>();
-		    	tail.add(new Segment(this.x, this.y, this.color));
+		    	active = false;
 		    }
 		  }
 
@@ -69,9 +70,23 @@ public class Snake extends Segment{
 	}
 	void eat(Food f) {
 		if (this.x==f.x && this.y==f.y) {
-		    //eaten++;
+		    score++;
 		    f.isEaten=true;
 		    tail.add(new Segment(this.x, this.y, this.color));
 		  }
+	}
+	void checkBorders() {
+		if(this.x<0) {
+			this.active=false;
+		}
+		if(this.x>500) {
+			this.active=false;
+		}
+		if(this.y<0) {
+			this.active=false;
+		}
+		if(this.y>500) {
+			this.active=false;
+		}
 	}
 }

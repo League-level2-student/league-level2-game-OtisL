@@ -21,7 +21,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	Font menuOptions;
 	Font scoreFont;
 	Timer frameDraw;
-	Timer movement;
+	Timer bombDrop;
 	Food food;
 	ObjectManager manager;
 	public static BufferedImage image;
@@ -31,11 +31,13 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 		titleFont = new Font("Arial", Font.PLAIN, 48);
 		menuOptions = new Font("Arial", Font.PLAIN, 30);
 		scoreFont = new Font("Arial", Font.PLAIN, 20);
-		frameDraw = new Timer(1000/10, this);
-		frameDraw.start();
 		food=new Food(1,1,Color.RED);
 		manager=new ObjectManager(food);
 		manager.dropFood();
+		frameDraw = new Timer(1000/10, this);
+		frameDraw.start();
+		bombDrop = new Timer(60000, manager);
+		
 	}
 	public void paintComponent(Graphics g){
 		if(currentState == MENU){
@@ -68,7 +70,11 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 		
 	}
 	void updateGameState() {  
-		
+		boolean oof = manager.gameOver();
+		if(oof) {
+			currentState++;
+			manager = new ObjectManager(food);
+		}
 	}
 	void updateEndState()  {  
 		
@@ -104,16 +110,28 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 		    }
 		}
 		if (e.getKeyCode()==KeyEvent.VK_UP) {
-			manager.up();
+			manager.oneUp();
 		}
 		if (e.getKeyCode()==KeyEvent.VK_DOWN) {
-			manager.down();
+			manager.oneDown();
 		}
 		if (e.getKeyCode()==KeyEvent.VK_LEFT) {
-			manager.left();
+			manager.oneLeft();
 		}
 		if (e.getKeyCode()==KeyEvent.VK_RIGHT) {
-			manager.right();
+			manager.oneRight();
+		}
+		if (e.getKeyCode()==KeyEvent.VK_W) {
+			manager.twoUp();
+		}
+		if (e.getKeyCode()==KeyEvent.VK_S) {
+			manager.twoDown();
+		}
+		if (e.getKeyCode()==KeyEvent.VK_A) {
+			manager.twoLeft();
+		}
+		if (e.getKeyCode()==KeyEvent.VK_D) {
+			manager.twoRight();
 		}
 	}
 	@Override
