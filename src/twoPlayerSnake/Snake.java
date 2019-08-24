@@ -79,13 +79,13 @@ public class Snake extends Segment{
 		if(this.x<0) {
 			this.active=false;
 		}
-		if(this.x>500) {
+		if(this.x>400) {
 			this.active=false;
 		}
 		if(this.y<0) {
 			this.active=false;
 		}
-		if(this.y>500) {
+		if(this.y>400) {
 			this.active=false;
 		}
 	}

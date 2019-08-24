@@ -3,9 +3,8 @@ package twoPlayerSnake;
 import java.awt.Color;
 import java.awt.Graphics;
 
-public class Food extends Segment{
-	boolean isEaten=true;
-	Food(int x, int y, Color color) {
+public class Bomb extends Segment{
+	Bomb(int x, int y, Color color) {
 		super(x, y, color);
 		// TODO Auto-generated constructor stub
 	}

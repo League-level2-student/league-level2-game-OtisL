@@ -5,8 +5,8 @@ import javax.swing.JFrame;
 public class TwoPlayerSnake {
 	JFrame frame;
 	GamePanel panel;
-	public static final int WIDTH = 500;
-	public static final int HEIGHT = 500;
+	public static final int WIDTH = 400;
+	public static final int HEIGHT = 400;
 	public static void main(String[] args) {
 		TwoPlayerSnake oof = new TwoPlayerSnake();
 		oof.setup();

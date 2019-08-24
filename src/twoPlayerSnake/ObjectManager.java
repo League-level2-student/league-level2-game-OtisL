@@ -11,15 +11,14 @@ public class ObjectManager implements ActionListener{
 	Food food;
 	Snake one;
 	Snake two;
-	ArrayList<Segment> tailOne = new ArrayList<Segment>();
-	ArrayList<Segment> tailTwo = new ArrayList<Segment>();
+	ArrayList<Bomb> bombs = new ArrayList<Bomb>();
 	Random randy = new Random();
 	int randomX;
 	int randomY;
 	ObjectManager(Food f){
 		this.food=f;
-		one = new Snake(50,250,Color.GREEN);
-		two = new Snake(400,250,Color.BLUE);
+		one = new Snake(350,250,Color.GREEN);
+		two = new Snake(50,250,Color.BLUE);
 	}
 	void draw(Graphics g) {
 		one.draw(g, food);
@@ -33,13 +32,21 @@ public class ObjectManager implements ActionListener{
 	public void dropFood() {
 		if (food.isEaten) {
 			food.isEaten=false;
-			randomX = randy.nextInt(50);
+			randomX = randy.nextInt(40);
 			randomX*=10;
 			food.x = randomX;
-			randomY = randy.nextInt(50);
+			randomY = randy.nextInt(40);
 			randomY*=10;
 			food.y = randomY;
 		}
+	}
+	void dropBomb() {
+		int rand = randy.nextInt(40);
+		rand*=10;
+		//f.oodx = randomX;
+		rand = randy.nextInt(40);
+		rand*=10;
+		//food.y = randomY;
 	}
 	void oneUp() {
 		if (one.direction!=2) {
@@ -47,25 +54,39 @@ public class ObjectManager implements ActionListener{
 		}
 	}
 	void oneDown() {
-		one.direction=2;
+		if (one.direction!=0) {
+			one.direction=2;
+		}
 	}
 	void oneLeft() {
-		one.direction=3;
+		if (one.direction!=1) {
+			one.direction=3;
+		}
 	}
 	void oneRight() {
-		one.direction=1;
+		if (one.direction!=3) {
+			one.direction=1;
+		}
 	}
 	void twoUp() {
-		two.direction=0;
+		if (two.direction!=2) {
+			two.direction=0;
+		}
 	}
 	void twoDown() {
-		two.direction=2;
+		if (two.direction!=0) {
+			two.direction=2;
+		}
 	}
 	void twoLeft() {
-		two.direction=3;
+		if (two.direction!=1) {
+			two.direction=3;
+		}
 	}
 	void twoRight() {
-		two.direction=1;
+		if (two.direction!=3) {
+			two.direction=1;
+		}
 	}
 	boolean gameOver() {
 		if(!one.active) {
