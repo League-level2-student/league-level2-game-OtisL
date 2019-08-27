@@ -18,6 +18,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	final int END = 2;
 	final int INSTRUCTIONS = 3;
 	int currentState = MENU;
+	int oneLastScore = 0;
+	int twoLastScore = 0;
 	Font titleFont;
 	Font menuOptions;
 	Font instructionFont;
@@ -59,7 +61,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 		g.setColor(Color.YELLOW);
 		g.drawString("Two Player Snake", 25, 50);
 		g.setFont(menuOptions);
-		g.drawString("Press 'ENTER' to start", 60, 200);
+		g.drawString("Press 'ENTER' to start", 65, 150);
+		g.drawString("Press 'SPACE' for instructions", 33, 230);
 	}
 	void drawGameState(Graphics g) { 
 		g.setColor(Color.BLACK);
@@ -73,8 +76,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 		g.setColor(Color.YELLOW);
 		g.drawString("Game Over!", 80, 50);
 		g.setFont(menuOptions);
-		g.drawString("Snake One (Green) scored "+manager.one.score, 40, 110);
-		g.drawString("Snake Two (Blue) scored "+manager.two.score, 45, 160);
+		g.drawString("Snake One (Green) scored "+oneLastScore, 40, 110);
+		g.drawString("Snake Two (Blue) scored "+twoLastScore, 45, 160);
 		g.drawString("one day this will contain a end reason", 45, 230);
 	}
 	void drawInstructionState(Graphics g) {
@@ -89,13 +92,17 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 		g.drawString("Eat food (red) to grow longer and get more points.", 5, 120);
 		g.drawString("Your tail will follow the path you moved around.", 5, 140);
 		g.drawString("If you hit a side, hit your own tail, or hit the other snake", 5, 160);
-		g.drawString("it is game over!", 5, 180);
-		g.drawString("Avoid the bombs as well! (yellow) It's game over if one is hit.", 5, 200);
-		g.drawString("Controls:", 5, 220);
-		g.drawString("Snake One (Green): Arrow Keys (Up, Down, Left, Right)", 10, 240);
-		g.drawString("Snake Two (Blue): WASD (W up, A left, S down, D right)", 10, 260);
-		g.drawString("Press the key and it will turn. (no need to hold it)", 5, 280);
-		g.drawString("No reversing too. (ex. While going up you can't go down)", 5, 300);
+		g.drawString("your snake dies and the game ends", 5, 180);
+		g.drawString("Avoid the bombs as well! (yellow) After x seconds they will", 5, 200);
+		g.drawString("detonate a 3x3 square (1 square = size of food, snake head)", 5, 220);
+		g.drawString("around them, if your snake is in the area then it dies.", 5, 240);
+		g.drawString("Controls:", 5, 260);
+		g.drawString("Snake One (Green): Arrow Keys (Up, Down, Left, Right)", 10, 280);
+		g.drawString("Snake Two (Blue): WASD (W up, A left, S down, D right)", 10, 300);
+		g.drawString("Press the key and it will turn. (no need to hold it)", 5, 320);
+		g.drawString("No reversing too. (ex. While going up you can't go down)", 5, 340);
+		g.setFont(menuOptions);
+		g.drawString("Press 'SPACE' to go back", 55, 380);
 	}
 	void updateMenuState() {  
 		
@@ -103,6 +110,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	void updateGameState() {  
 		boolean oof = manager.gameOver();
 		if(oof) {
+			oneLastScore = manager.one.score;
+			twoLastScore = manager.two.score;
 			currentState++;
 			manager = new ObjectManager(food);
 			manager.dropFood();

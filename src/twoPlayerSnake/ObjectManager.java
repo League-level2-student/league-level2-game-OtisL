@@ -108,6 +108,7 @@ public class ObjectManager implements ActionListener{
 			for(int j=0;j<two.tail.size();j++) {
 				Segment current2 = two.tail.get(i);
 				if(current.collisionBox.intersects(current2.collisionBox)) {
+					System.out.println("collided");
 					one.active=false;
 					two.active=false;
 				}

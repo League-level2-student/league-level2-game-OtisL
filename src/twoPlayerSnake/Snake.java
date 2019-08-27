@@ -17,6 +17,7 @@ public class Snake extends Segment{
 		super.update();
 	}
 	void draw(Graphics g, Food f) {
+		//System.out.println(score);
 		//this.y+=1;
 		g.setColor(this.color);
 		g.fillRect(this.x, this.y, SEGMENTWIDTH, SEGMENTHEIGHT);
