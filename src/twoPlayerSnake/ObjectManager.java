@@ -11,7 +11,7 @@ public class ObjectManager implements ActionListener{
 	Food food;
 	Snake one;
 	Snake two;
-	ArrayList<Bomb> bombs = new ArrayList<Bomb>();
+	Bomb bomb;
 	Random randy = new Random();
 	int randomX;
 	int randomY;
@@ -23,11 +23,13 @@ public class ObjectManager implements ActionListener{
 	void draw(Graphics g) {
 		one.draw(g, food);
 		two.draw(g, food);
+		if(bomb!=null) {
+			bomb.draw(g);
+		}
 		checkIntersection();
 		dropFood();
 		g.setColor(food.color);
 		g.fillRect(food.x, food.y, food.SEGMENTWIDTH, food.SEGMENTHEIGHT);
-		
 	}
 	public void dropFood() {
 		if (food.isEaten) {
@@ -43,10 +45,12 @@ public class ObjectManager implements ActionListener{
 	void dropBomb() {
 		int rand = randy.nextInt(40);
 		rand*=10;
-		//f.oodx = randomX;
-		rand = randy.nextInt(40);
-		rand*=10;
-		//food.y = randomY;
+		int rand1 = randy.nextInt(40);
+		rand1*=10;
+		bomb = new Bomb(rand,rand1,Color.YELLOW);
+	}
+	void checkExplosionArea() {
+		
 	}
 	void oneUp() {
 		if (one.direction!=2) {
@@ -100,15 +104,21 @@ public class ObjectManager implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		
+		System.out.println("ran!");
+		dropBomb();
 	}
 	void checkIntersection() {
+		if(one.collisionBox.intersects(two.collisionBox)){
+			System.out.println("collided heads");
+			one.active=false;
+			two.active=false;
+		}
 		for(int i=0;i<one.tail.size();i++) {
 			Segment current = one.tail.get(i);
 			for(int j=0;j<two.tail.size();j++) {
 				Segment current2 = two.tail.get(i);
 				if(current.collisionBox.intersects(current2.collisionBox)) {
-					System.out.println("collided");
+					System.out.println("collided tails");
 					one.active=false;
 					two.active=false;
 				}

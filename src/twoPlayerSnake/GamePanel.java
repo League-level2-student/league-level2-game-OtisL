@@ -39,8 +39,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 		manager.dropFood();
 		frameDraw = new Timer(1000/10, this);
 		frameDraw.start();
-		bombDrop = new Timer(60000, manager);
-		
+		bombDrop = new Timer(5000, manager);
 	}
 	public void paintComponent(Graphics g){
 		if(currentState == MENU){
@@ -113,6 +112,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 			oneLastScore = manager.one.score;
 			twoLastScore = manager.two.score;
 			currentState++;
+			bombDrop.stop();
 			manager = new ObjectManager(food);
 			manager.dropFood();
 		}
@@ -126,9 +126,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		if(e.getSource()==bombDrop) {
-			manager.dropBomb();
-		}else if (e.getSource()==frameDraw) {
+		if (e.getSource()==frameDraw) {
 			if(currentState == MENU){
 				updateMenuState();
 			}else if(currentState == GAME){
@@ -156,6 +154,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 		        currentState = MENU;
 		    } else if(currentState==MENU){
 		        currentState++;
+		        bombDrop.start();
 		    }
 		}
 		if (e.getKeyCode()==KeyEvent.VK_SPACE) {
