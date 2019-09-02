@@ -9,9 +9,12 @@ public class Snake extends Segment{
 	int direction = 0;
 	int score = 0;
 	boolean active = true;
-	public Snake(int x, int y, Color color) {
+	String reason;
+	String name;
+	public Snake(int x, int y, Color color, String name) {
 		// TODO Auto-generated constructor stub
 		super(x,y,color);
+		this.name=name;
 	}
 	void update() {
 		super.update();
@@ -42,6 +45,7 @@ public class Snake extends Segment{
 		    Segment current = tail.get(i);
 		    if(this.x==current.x && this.y == current.y){
 		    	System.out.println("oofed");
+		    	reason = name+" hit it's own tail";
 		    	active = false;
 		    }
 		  }
@@ -78,15 +82,19 @@ public class Snake extends Segment{
 	}
 	void checkBorders() {
 		if(this.x<0) {
+			reason = name+" hit the wall";
 			this.active=false;
 		}
 		if(this.x>400) {
+			reason = name+" hit the wall";
 			this.active=false;
 		}
 		if(this.y<0) {
+			reason = name+" hit the wall";
 			this.active=false;
 		}
 		if(this.y>400) {
+			reason = name+" hit the wall";
 			this.active=false;
 		}
 	}

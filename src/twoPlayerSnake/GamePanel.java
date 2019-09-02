@@ -20,11 +20,13 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	int currentState = MENU;
 	int oneLastScore = 0;
 	int twoLastScore = 0;
+	int number=0; //REMOVE ME LATER
 	Font titleFont;
 	Font menuOptions;
 	Font instructionFont;
 	Timer frameDraw;
 	Timer bombDrop;
+	Timer bombExplode;
 	Food food;
 	ObjectManager manager;
 	public static BufferedImage image;
@@ -35,11 +37,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 		menuOptions = new Font("Arial", Font.PLAIN, 26);
 		instructionFont = new Font("Arial", Font.PLAIN, 15);
 		food=new Food(1,1,Color.RED);
-		manager=new ObjectManager(food);
-		manager.dropFood();
 		frameDraw = new Timer(1000/10, this);
 		frameDraw.start();
-		bombDrop = new Timer(5000, manager);
+		bombDrop = new Timer (30000, this);
+		bombExplode = new Timer(15000, this);
 	}
 	public void paintComponent(Graphics g){
 		if(currentState == MENU){
@@ -113,8 +114,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 			twoLastScore = manager.two.score;
 			currentState++;
 			bombDrop.stop();
-			manager = new ObjectManager(food);
-			manager.dropFood();
+			manager = null;
 		}
 	}
 	void updateEndState()  {  
@@ -138,6 +138,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 			}
 			repaint();
 		}
+		
 	}
 
 	@Override
@@ -149,6 +150,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
+		System.out.println("press"+number);
+		number++;
 		if (e.getKeyCode()==KeyEvent.VK_ENTER) {
 		    if (currentState == END) {
 		        currentState = MENU;
