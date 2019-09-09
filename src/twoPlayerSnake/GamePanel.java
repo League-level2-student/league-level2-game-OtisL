@@ -13,14 +13,13 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 public class GamePanel extends JPanel implements ActionListener, KeyListener{
-	final int MENU = 0;
-	final int GAME = 1;
-	final int END = 2;
-	final int INSTRUCTIONS = 3;
-	int currentState = MENU;
+	final static int MENU = 0;
+	final static int GAME = 1;
+	final static int END = 2;
+	final static int INSTRUCTIONS = 3;
+	public static int currentState = MENU;
 	int oneLastScore = 0;
 	int twoLastScore = 0;
-	int number=0; //REMOVE ME LATER
 	Font titleFont;
 	Font menuOptions;
 	Font instructionFont;
@@ -32,11 +31,13 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	public static BufferedImage image;
 	public static boolean needImage = true;
 	public static boolean gotImage = false;	
+	String reason;
 	GamePanel(){
 		titleFont = new Font("Arial", Font.PLAIN, 43);
 		menuOptions = new Font("Arial", Font.PLAIN, 26);
 		instructionFont = new Font("Arial", Font.PLAIN, 15);
 		food=new Food(1,1,Color.RED);
+		manager = new ObjectManager(food);
 		frameDraw = new Timer(1000/10, this);
 		frameDraw.start();
 		bombDrop = new Timer (30000, this);
@@ -53,7 +54,6 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 			drawInstructionState(g);
 		}
 	}
-	//Add Space=Instructions
 	void drawMenuState(Graphics g) { 
 		g.setColor(Color.BLUE);
 		g.fillRect(0, 0, TwoPlayerSnake.WIDTH, TwoPlayerSnake.HEIGHT);
@@ -78,7 +78,11 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 		g.setFont(menuOptions);
 		g.drawString("Snake One (Green) scored "+oneLastScore, 40, 110);
 		g.drawString("Snake Two (Blue) scored "+twoLastScore, 45, 160);
-		g.drawString("one day this will contain a end reason", 45, 230);
+		if(reason==null) {
+			g.drawString("Error occured while getting reason", 20, 210);
+		}else {
+			g.drawString(reason, 40, 210);
+		}
 	}
 	void drawInstructionState(Graphics g) {
 		g.setColor(Color.BLUE);
@@ -93,12 +97,12 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 		g.drawString("Your tail will follow the path you moved around.", 5, 140);
 		g.drawString("If you hit a side, hit your own tail, or hit the other snake", 5, 160);
 		g.drawString("your snake dies and the game ends", 5, 180);
-		g.drawString("Avoid the bombs as well! (yellow) After x seconds they will", 5, 200);
+		g.drawString("Avoid the bombs as well! (yellow) After 10 seconds they will", 5, 200);
 		g.drawString("detonate a 3x3 square (1 square = size of food, snake head)", 5, 220);
 		g.drawString("around them, if your snake is in the area then it dies.", 5, 240);
 		g.drawString("Controls:", 5, 260);
-		g.drawString("Snake One (Green): Arrow Keys (Up, Down, Left, Right)", 10, 280);
-		g.drawString("Snake Two (Blue): WASD (W up, A left, S down, D right)", 10, 300);
+		g.drawString("Snake One (Green): Arrow Keys (Up, Down, Left, Right)", 15, 280);
+		g.drawString("Snake Two (Blue): WASD (W up, A left, S down, D right)", 15, 300);
 		g.drawString("Press the key and it will turn. (no need to hold it)", 5, 320);
 		g.drawString("No reversing too. (ex. While going up you can't go down)", 5, 340);
 		g.setFont(menuOptions);
@@ -107,14 +111,23 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	void updateMenuState() {  
 		
 	}
-	void updateGameState() {  
+	void updateGameState() {
 		boolean oof = manager.gameOver();
 		if(oof) {
 			oneLastScore = manager.one.score;
 			twoLastScore = manager.two.score;
+			if(manager.reason!=null) {
+				reason=manager.reason;
+			}else if(manager.one.reason!=null) {
+				reason=manager.one.reason;
+			}else if(manager.two.reason!=null) {
+				reason=manager.two.reason;
+			}else {
+				reason="Error occured while getting reason";
+			}
 			currentState++;
 			bombDrop.stop();
-			manager = null;
+			manager = new ObjectManager(food);
 		}
 	}
 	void updateEndState()  {  
@@ -150,8 +163,6 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
-		System.out.println("press"+number);
-		number++;
 		if (e.getKeyCode()==KeyEvent.VK_ENTER) {
 		    if (currentState == END) {
 		        currentState = MENU;

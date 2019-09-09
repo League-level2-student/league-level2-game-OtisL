@@ -20,8 +20,6 @@ public class Snake extends Segment{
 		super.update();
 	}
 	void draw(Graphics g, Food f) {
-		//System.out.println(score);
-		//this.y+=1;
 		g.setColor(this.color);
 		g.fillRect(this.x, this.y, SEGMENTWIDTH, SEGMENTHEIGHT);
 		manageTail();
@@ -44,7 +42,6 @@ public class Snake extends Segment{
 		for(int i=0; i<tail.size(); i++){
 		    Segment current = tail.get(i);
 		    if(this.x==current.x && this.y == current.y){
-		    	System.out.println("oofed");
 		    	reason = name+" hit it's own tail";
 		    	active = false;
 		    }
@@ -85,7 +82,7 @@ public class Snake extends Segment{
 			reason = name+" hit the wall";
 			this.active=false;
 		}
-		if(this.x>400) {
+		if(this.x>399) {
 			reason = name+" hit the wall";
 			this.active=false;
 		}
@@ -93,7 +90,7 @@ public class Snake extends Segment{
 			reason = name+" hit the wall";
 			this.active=false;
 		}
-		if(this.y>400) {
+		if(this.y>399) {
 			reason = name+" hit the wall";
 			this.active=false;
 		}

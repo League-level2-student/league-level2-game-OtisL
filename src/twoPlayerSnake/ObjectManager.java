@@ -11,10 +11,6 @@ import java.util.Random;
 import javax.swing.Timer;
 
 public class ObjectManager implements ActionListener{
-	/* DO THE 
-	END REASON!!!!!!!
-	ITS WHAT YOU NEED TO DO!!!!
-	 */
 	Food food;
 	Snake one;
 	Snake two;
@@ -29,8 +25,8 @@ public class ObjectManager implements ActionListener{
 		this.food=f;
 		one = new Snake(350,250,Color.GREEN, "One");
 		two = new Snake(50,250,Color.BLUE, "Two");
-		bombDrop = new Timer(5000, this);
-		bombExplode = new Timer(2500, this);
+		bombDrop = new Timer(30000, this);
+		bombExplode = new Timer(10000, this);
 		bombDrop.start();
 	}
 	void draw(Graphics g) {
@@ -120,17 +116,18 @@ public class ObjectManager implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		if(e.getSource().equals(bombDrop)) {
-			dropBomb();
-			bombExplode.start();
-		}else if(e.getSource().equals(bombExplode)) {
-			bombExplode.stop();
-			checkExplosionArea();
+		if(GamePanel.currentState==1) {
+			if(e.getSource().equals(bombDrop)) {
+				dropBomb();
+				bombExplode.start();
+			}else if(e.getSource().equals(bombExplode)) {
+				bombExplode.stop();
+				checkExplosionArea();
+			}
 		}
 	}
 	void checkIntersection() {
 		if(one.collisionBox.intersects(two.collisionBox)){
-			System.out.println("collided heads");
 			reason="The snakes hit each other";
 			one.active=false;
 			two.active=false;
@@ -140,7 +137,6 @@ public class ObjectManager implements ActionListener{
 			for(int j=0;j<two.tail.size();j++) {
 				Segment current2 = two.tail.get(j);
 				if(current.collisionBox.intersects(current2.collisionBox)) {
-					System.out.println("collided tails");
 					reason="The snakes hit each other";
 					one.active=false;
 					two.active=false;
@@ -153,7 +149,6 @@ public class ObjectManager implements ActionListener{
 		for(int i=0;i<one.tail.size();i++) {
 			Segment current = one.tail.get(i);
 			if(current.collisionBox.intersects(collisionArea)) {
-					System.out.println("oofed via explosion");
 					reason="Snake One was blown up";
 					one.active=false;
 				}
@@ -161,18 +156,15 @@ public class ObjectManager implements ActionListener{
 		for(int j=0;j<two.tail.size();j++) {
 			Segment current = two.tail.get(j);
 			if(current.collisionBox.intersects(collisionArea)) {
-					System.out.println("oofed via explosion");
 					reason="Snake Two was blown up";
 					two.active=false;
 				}
 			}
 		if(one.collisionBox.intersects(collisionArea)) {
-			System.out.println("oofed via explosion");
 			reason="Snake One was blown up";
 			one.active=false;
 		}
-		if(two.collisionBox.intersects(collisionArea)) {
-			System.out.println("oofed via explosion");	
+		if(two.collisionBox.intersects(collisionArea)) {	
 			reason="Snake Two was blown up";
 			two.active=false;
 		}
