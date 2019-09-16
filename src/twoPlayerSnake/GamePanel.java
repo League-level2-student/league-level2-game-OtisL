@@ -17,6 +17,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	final static int GAME = 1;
 	final static int END = 2;
 	final static int INSTRUCTIONS = 3;
+	final static int WARNING = 4;
 	public static int currentState = MENU;
 	int oneLastScore = 0;
 	int twoLastScore = 0;
@@ -81,8 +82,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 		if(reason==null) {
 			g.drawString("Error occured while getting reason", 20, 210);
 		}else {
-			g.drawString(reason, 40, 210);
+			g.drawString(reason, 45, 210);
 		}
+		g.drawString("Press 'ENTER' to continue", 40, 260);
+		
 	}
 	void drawInstructionState(Graphics g) {
 		g.setColor(Color.BLUE);
@@ -106,8 +109,20 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 		g.drawString("Press the key and it will turn. (no need to hold it)", 5, 320);
 		g.drawString("No reversing too. (ex. While going up you can't go down)", 5, 340);
 		g.setFont(menuOptions);
-		g.drawString("Press 'SPACE' to go back", 55, 380);
+		g.drawString("Press 'SPACE' to go back", 54, 380);
 	}
+	/*void drawWarningState(Graphics g) {
+		g.setColor(Color.BLUE);
+		g.fillRect(0, 0, TwoPlayerSnake.WIDTH, TwoPlayerSnake.HEIGHT);
+		g.setFont(titleFont);
+		g.setColor(Color.YELLOW);
+		g.drawString("Warning", 50, 50);
+		g.setFont(menuOptions);
+		g.drawString("Please note that this game has a flaw", 10, 100);
+		g.drawString("having to do with the keyPressed method", 10, 140);
+		g.drawString("and two player games.", 10, 180);
+		//g.drawString("Some", 50, 50);
+	}*/
 	void updateMenuState() {  
 		
 	}
@@ -127,7 +142,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 			}
 			currentState++;
 			bombDrop.stop();
-			manager = new ObjectManager(food);
+			manager = null;
 		}
 	}
 	void updateEndState()  {  
@@ -146,8 +161,6 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 				updateGameState();
 			}else if(currentState == END){
 				updateEndState();
-			}else if(currentState == INSTRUCTIONS) {
-				updateInstructionState();
 			}
 			repaint();
 		}
@@ -167,6 +180,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 		    if (currentState == END) {
 		        currentState = MENU;
 		    } else if(currentState==MENU){
+		    	manager=new ObjectManager(food);
 		        currentState++;
 		        bombDrop.start();
 		    }

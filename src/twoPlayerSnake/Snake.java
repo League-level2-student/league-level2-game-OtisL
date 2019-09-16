@@ -33,16 +33,15 @@ public class Snake extends Segment{
 		update();
 	}
 	void manageTail() {
-		  checkTailCollision();
-		  tail.add(new Segment(this.x, this.y, this.color)); 
-		  //tail.add(new Segment(this.x, this.y, this.color)); 
-		  tail.remove(0);
-		}
+		checkTailCollision();
+		tail.add(new Segment(this.x, this.y, this.color)); 
+		tail.remove(0);
+	}
 	void checkTailCollision() {
 		for(int i=0; i<tail.size(); i++){
 		    Segment current = tail.get(i);
 		    if(this.x==current.x && this.y == current.y){
-		    	reason = name+" hit it's own tail";
+		    	reason = "Snake "+name+" hit it's own tail";
 		    	active = false;
 		    }
 		  }
@@ -79,19 +78,19 @@ public class Snake extends Segment{
 	}
 	void checkBorders() {
 		if(this.x<0) {
-			reason = name+" hit the wall";
+			reason = "Snake "+name+" hit the wall";
 			this.active=false;
 		}
 		if(this.x>399) {
-			reason = name+" hit the wall";
+			reason = "Snake "+name+" hit the wall";
 			this.active=false;
 		}
 		if(this.y<0) {
-			reason = name+" hit the wall";
+			reason = "Snake "+name+" hit the wall";
 			this.active=false;
 		}
 		if(this.y>399) {
-			reason = name+" hit the wall";
+			reason = "Snake "+name+" hit the wall";
 			this.active=false;
 		}
 	}
